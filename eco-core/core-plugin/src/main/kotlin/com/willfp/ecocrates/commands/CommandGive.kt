@@ -33,7 +33,7 @@ class CommandGive(plugin: EcoPlugin) : Subcommand(
         }
 
         if (args.size < 2) {
-            sender.sendMessage("must-specify-crate")
+            sender.sendMessage(plugin.langYml.getMessage("must-specify-crate"))
             return
         }
 

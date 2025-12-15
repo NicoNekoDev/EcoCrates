@@ -20,7 +20,7 @@ class CommandGiveoffline(plugin: EcoPlugin) : Subcommand(
 ) {
     override fun onExecute(sender: CommandSender, args: List<String>) {
         if (args.size < 1) {
-            sender.sendMessage("must-specify-crate")
+            sender.sendMessage(plugin.langYml.getMessage("must-specify-crate"))
             return
         }
 

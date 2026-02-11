@@ -65,6 +65,7 @@ class PlacedCrate(
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun tickRandomReward(tick: Int) {
         if (!crate.isShowingRandomReward || crate.rewards.isEmpty()) {
             return

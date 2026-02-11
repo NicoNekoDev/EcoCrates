@@ -2,15 +2,13 @@ package com.willfp.ecocrates.crate.placed
 
 import com.willfp.eco.core.config.ConfigType
 import com.willfp.eco.core.config.StaticBaseConfig
-import com.willfp.ecocrates.EcoCratesPlugin
 import com.willfp.ecocrates.crate.Crate
 import com.willfp.ecocrates.crate.Crates
+import com.willfp.ecocrates.plugin
 import org.bukkit.Bukkit
 import org.bukkit.Location
 
-private val plugin = EcoCratesPlugin.instance
-
-private object YamlStorage : StaticBaseConfig(
+private object PlacedCratesYml : StaticBaseConfig(
     "placedcrates",
     plugin,
     ConfigType.YAML
@@ -51,16 +49,16 @@ object PlacedCrates {
     }
 
     private fun saveCrate(location: Location, crate: Crate) {
-        YamlStorage.set("crates.${location.toShortString()}", crate.id)
-        YamlStorage.save()
+        PlacedCratesYml.set("crates.${location.toShortString()}", crate.id)
+        PlacedCratesYml.save()
     }
 
     fun removeCrate(location: Location) {
         loaded[location]?.onRemove()
         loaded.remove(location)
 
-        YamlStorage.set("crates.${location.toShortString()}", null)
-        YamlStorage.save()
+        PlacedCratesYml.set("crates.${location.toShortString()}", null)
+        PlacedCratesYml.save()
     }
 
     internal fun reload() {
@@ -70,9 +68,9 @@ object PlacedCrates {
 
         removeAll()
 
-        for (shortString in YamlStorage.getSubsection("crates").getKeys(false)) {
+        for (shortString in PlacedCratesYml.getSubsection("crates").getKeys(false)) {
             val location = locationFromShortString(shortString) ?: continue
-            val id = YamlStorage.getString("crates.$shortString")
+            val id = PlacedCratesYml.getString("crates.$shortString")
             val crate = Crates.getByID(id) ?: continue
             // Sometimes this code doesn't run and I literally don't get it.
             loaded[location] = PlacedCrate(crate, location)

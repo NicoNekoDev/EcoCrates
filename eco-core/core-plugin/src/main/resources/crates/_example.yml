@@ -136,7 +136,7 @@ finish-effects:
       volume: 10
       pitch: 1
 
-rewards: # The rewards to give, configure in rewards.yml
+rewards: # The rewards to give, configure in /rewards/ folder
   - diamond_sword
   - stack_of_emeralds
   - bedrock

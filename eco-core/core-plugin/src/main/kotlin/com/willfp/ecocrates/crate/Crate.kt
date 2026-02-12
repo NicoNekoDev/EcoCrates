@@ -226,6 +226,7 @@ class Crate(
             /*
             Legacy reward config.
              */
+            @Suppress("DEPRECATION")
             for (reward in rewards) {
                 if (reward.displayRow == null || reward.displayColumn == null) {
                     continue
@@ -259,29 +260,38 @@ class Crate(
         }
     }
 
+    @Deprecated("Use openEffects instead.")
     private val openSound = PlayableSound(
         config.getSubsections("open.sounds")
             .map { ConfiguredSound.fromConfig(it) }
     )
 
+    @Deprecated("Use openEffects instead.")
     private val openMessages = config.getStrings("open.messages")
 
+    @Deprecated("Use openEffects instead.")
     private val openBroadcasts = config.getStrings("open.broadcasts")
 
+    @Deprecated("Use openEffects instead.")
     private val openCommands = config.getStrings("open.commands")
 
+    @Deprecated("Use finishEffects instead.")
     private val finishSound = PlayableSound(
         config.getSubsections("finish.sounds")
             .map { ConfiguredSound.fromConfig(it) }
     )
 
+    @Deprecated("Use finishEffects instead.")
     private val finishFireworks = config.getSubsections("finish.fireworks")
         .map { ConfiguredFirework.fromConfig(it) }
 
+    @Deprecated("Use finishEffects instead.")
     private val finishMessages = config.getStrings("finish.messages")
 
+    @Deprecated("Use finishEffects instead.")
     private val finishBroadcasts = config.getStrings("finish.broadcasts")
 
+    @Deprecated("Use finishEffects instead.")
     private val finishCommands = config.getStrings("finish.commands")
 
     init {
@@ -294,6 +304,52 @@ class Crate(
             plugin,
             "${id}_opens",
         ) { getOpens(it).toString() }.register()
+
+        if (config.has("open.sounds")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'open.sounds'. Please switch to 'open-effects'."
+            )
+        }
+        if (config.has("open.messages")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'open.messages'. Please switch to 'open-effects'."
+            )
+        }
+        if (config.has("open.commands")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'open.commands'. Please switch to 'open-effects'."
+            )
+        }
+        if (config.has("open.broadcasts")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'open.broadcasts'. Please switch to 'open-effects'."
+            )
+        }
+        if (config.has("finish.sounds")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'finish.sounds'. Please switch to 'open-effects'."
+            )
+        }
+        if (config.has("finish.messages")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'finish.messages'. Please switch to 'open-effects'."
+            )
+        }
+        if (config.has("finish.commands")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'finish.commands'. Please switch to 'open-effects'."
+            )
+        }
+        if (config.has("finish.broadcasts")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'finish.broadcasts'. Please switch to 'open-effects'."
+            )
+        }
+        if (config.has("finish.fireworks")) {
+            plugin.logger.warning(
+                "Crate '$id' uses deprecated 'finish.fireworks'. Please switch to 'open-effects'."
+            )
+        }
     }
 
     private fun makeRoll(

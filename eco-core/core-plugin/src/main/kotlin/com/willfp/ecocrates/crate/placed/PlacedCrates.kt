@@ -61,7 +61,7 @@ object PlacedCrates {
         PlacedCratesYml.save()
     }
 
-    internal fun reload() {
+    fun reload() {
         for ((location, crate) in loaded) {
             saveCrate(location, crate.crate)
         }
@@ -71,13 +71,13 @@ object PlacedCrates {
         for (shortString in PlacedCratesYml.getSubsection("crates").getKeys(false)) {
             val location = locationFromShortString(shortString) ?: continue
             val id = PlacedCratesYml.getString("crates.$shortString")
-            val crate = Crates.getByID(id) ?: continue
+            val crate = Crates[id] ?: continue
             // Sometimes this code doesn't run and I literally don't get it.
             loaded[location] = PlacedCrate(crate, location)
         }
     }
 
-    internal fun removeAll() {
+    fun removeAll() {
         for (crate in loaded.values) {
             crate.onRemove()
         }

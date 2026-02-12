@@ -17,6 +17,7 @@ import com.willfp.eco.util.toNiceString
 import com.willfp.ecocrates.crate.Crate
 import com.willfp.ecocrates.crate.PermissionMultipliers
 import com.willfp.ecocrates.plugin
+import com.willfp.ecocrates.util.RewardWeightEvent
 import com.willfp.libreforge.NamedValue
 import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.effects.Effects
@@ -43,11 +44,7 @@ class Reward(
     )
 
     val name = config.getFormattedString("name")
-
-    // Legacy
-    private val commands = config.getStrings("commands")
-    private val items = config.getStrings("items").map { Items.lookup(it) }.filterNot { it is EmptyTestableItem }
-    private val messages = config.getFormattedStrings("messages")
+    val displayName = config.getFormattedString("display.name")
 
     private val permission = Permission(
         "ecocrates.reward.$id",
@@ -62,7 +59,7 @@ class Reward(
         }
     }
 
-    private val maxWins = config.getInt("max-wins")
+    val maxWins = config.getInt("max-wins")
 
     private val winsKey: PersistentDataKey<Int> = PersistentDataKey(
         plugin.namespacedKeyFactory.create("${id}_wins"),
@@ -127,7 +124,11 @@ class Reward(
         if (!player.hasPermission(permission)) {
             return 0.0
         }
-        return weight
+
+        val event = RewardWeightEvent(player, this, weight)
+        Bukkit.getPluginManager().callEvent(event)
+
+        return event.weight
     }
 
     fun getPercentageChance(player: Player, among: Collection<Reward>): Double {
@@ -149,18 +150,55 @@ class Reward(
     }
 
     // Legacy
+    @Deprecated("Use previewReward instead.")
     val displayRow = config.getIntOrNull("display.row")
+
+    @Deprecated("Use previewReward instead.")
     val displayColumn = config.getIntOrNull("display.column")
 
-    val displayName = config.getFormattedString("display.name")
+    @Deprecated("Use winEffects instead.")
+    private val commands = config.getStrings("commands")
+
+    @Deprecated("Use winEffects instead.")
+    private val items = config.getStrings("items").map { Items.lookup(it) }.filterNot { it is EmptyTestableItem }
+
+    @Deprecated("Use winEffects instead.")
+    private val messages = config.getFormattedStrings("messages")
 
     init {
         PlayerPlaceholder(
             plugin,
             "${id}_wins",
         ) { getWins(it).toString() }.register()
+
+        if (config.has("display.row")) {
+            plugin.logger.warning(
+                "Reward '$id' uses deprecated 'display.row'."
+            )
+        }
+        if (config.has("display.column")) {
+            plugin.logger.warning(
+                "Reward '$id' uses deprecated 'display.column'."
+            )
+        }
+        if (config.has("commands")) {
+            plugin.logger.warning(
+                "Reward '$id' uses deprecated 'commands'. Please switch to 'win-effects'."
+            )
+        }
+        if (config.has("items")) {
+            plugin.logger.warning(
+                "Reward '$id' uses deprecated 'items'. Please switch to 'win-effects'."
+            )
+        }
+        if (config.has("messages")) {
+            plugin.logger.warning(
+                "Reward '$id' uses deprecated 'messages'. Please switch to 'win-effects'."
+            )
+        }
     }
 
+    @Suppress("DEPRECATION")
     fun giveTo(player: Player, crate: Crate) {
         winEffects?.trigger(
             TriggerData(player = player)

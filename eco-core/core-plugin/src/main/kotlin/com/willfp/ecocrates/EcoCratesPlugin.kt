@@ -11,11 +11,12 @@ import com.willfp.ecocrates.converters.impl.ExcellentCratesConverter
 import com.willfp.ecocrates.converters.impl.SpecializedCratesConverter
 import com.willfp.ecocrates.crate.Crates
 import com.willfp.ecocrates.crate.KeyGUI
-import com.willfp.ecocrates.crate.placed.HologramBugFixer
+import com.willfp.ecocrates.crate.placed.CrateDisplay
 import com.willfp.ecocrates.crate.placed.PlacedCrates
 import com.willfp.ecocrates.display.KeyDisplay
 import com.willfp.ecocrates.libreforge.EffectGiveVirtualKey
 import com.willfp.ecocrates.libreforge.EffectResetRewardWins
+import com.willfp.ecocrates.libreforge.EffectRewardWeightMultiplier
 import com.willfp.ecocrates.libreforge.FilterCrate
 import com.willfp.ecocrates.libreforge.FilterCrateReward
 import com.willfp.ecocrates.libreforge.TriggerCrateOpen
@@ -39,6 +40,7 @@ class EcoCratesPlugin : LibreforgePlugin() {
     }
 
     override fun handleEnable() {
+        Effects.register(EffectRewardWeightMultiplier)
         Effects.register(EffectGiveVirtualKey)
         Effects.register(EffectResetRewardWins)
         Filters.register(FilterCrate)
@@ -52,8 +54,9 @@ class EcoCratesPlugin : LibreforgePlugin() {
     }
 
     override fun handleReload() {
-        PlacedCrates.reload()
         KeyGUI.update()
+        PlacedCrates.reload()
+        CrateDisplay.start()
     }
 
     override fun loadConfigCategories(): List<ConfigCategory> {
@@ -72,8 +75,7 @@ class EcoCratesPlugin : LibreforgePlugin() {
     override fun loadListeners(): List<Listener> {
         return listOf(
             PlacedCrateListener,
-            CrateKeyListener,
-            HologramBugFixer
+            CrateKeyListener
         )
     }
 

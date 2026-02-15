@@ -111,6 +111,7 @@ class PlacedCrate(
                 entity.setGravity(false)
                 entity.isCustomNameVisible = true
                 entity.customName = crate.randomRewardName
+                entity.isPersistent = false
                 item = entity
             }
         }

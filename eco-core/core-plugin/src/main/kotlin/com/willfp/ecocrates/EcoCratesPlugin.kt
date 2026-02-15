@@ -49,10 +49,6 @@ class EcoCratesPlugin : LibreforgePlugin() {
         Triggers.register(TriggerCrateWin)
     }
 
-    override fun handleDisable() {
-        PlacedCrates.removeAll()
-    }
-
     override fun handleReload() {
         KeyGUI.update()
         PlacedCrates.reload()

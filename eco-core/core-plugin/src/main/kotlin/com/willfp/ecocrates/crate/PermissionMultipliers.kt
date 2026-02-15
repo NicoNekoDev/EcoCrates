@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.willfp.ecocrates.crate
 
 import com.willfp.eco.core.config.updating.ConfigUpdater

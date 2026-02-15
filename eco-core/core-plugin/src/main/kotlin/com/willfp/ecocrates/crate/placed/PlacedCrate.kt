@@ -3,6 +3,7 @@ package com.willfp.ecocrates.crate.placed
 import com.willfp.eco.core.integrations.hologram.Hologram
 import com.willfp.eco.core.integrations.hologram.HologramManager
 import com.willfp.ecocrates.crate.Crate
+import com.willfp.ecocrates.plugin
 import org.bukkit.Location
 import org.bukkit.entity.Item
 import org.bukkit.util.Vector
@@ -29,8 +30,10 @@ class PlacedCrate(
     private var item: Item? = null
 
     internal fun tick(tick: Int) {
-        tickRandomReward(tick)
-        tickHolograms(tick)
+        plugin.scheduler.runTask(location) { // folia issue
+            tickRandomReward(tick)
+            tickHolograms(tick)
+        }
     }
 
     internal fun tickAsync(tick: Int) {

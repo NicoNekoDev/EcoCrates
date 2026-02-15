@@ -6,8 +6,8 @@ object CrateDisplay {
     private var tick = 0
 
     fun start() {
-        plugin.scheduler.runTimer(1, 1) { tick() }
-        plugin.scheduler.runAsyncTimer(1, 1) { tickAsync() }
+        plugin.scheduler.runTaskTimer(1, 1) { tick() }
+        plugin.scheduler.runTaskAsyncTimer(1, 1) { tickAsync() }
     }
 
     private fun tick() {

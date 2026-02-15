@@ -1,5 +1,6 @@
 package com.willfp.ecocrates.crate.placed
 
+import com.willfp.eco.core.Prerequisite
 import com.willfp.eco.core.integrations.hologram.Hologram
 import com.willfp.eco.core.integrations.hologram.HologramManager
 import com.willfp.ecocrates.crate.Crate
@@ -115,7 +116,10 @@ class PlacedCrate(
             ensureItemSpawned()
 
             item?.itemStack = crate.rewards.random().getDisplay()
-            item?.teleport(location.clone().add(0.0, crate.randomRewardHeight, 0.0))
+            if (Prerequisite.HAS_FOLIA.isMet)
+                item?.teleportAsync(location.clone().add(0.0, crate.randomRewardHeight, 0.0))
+            else
+                item?.teleport(location.clone().add(0.0, crate.randomRewardHeight, 0.0))
         }
     }
 

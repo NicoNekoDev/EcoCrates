@@ -121,7 +121,9 @@ class RollEncircle private constructor(
             EncircleState.REVEAL -> {
                 for (item in display.toSet()) {
                     if (item.itemStack != reward.getDisplay(player, crate)) {
-                        item.remove()
+                        plugin.scheduler.runTask(item) {
+                            item.remove()
+                        }
                         display.remove(item)
                     }
                 }
@@ -162,7 +164,7 @@ class RollEncircle private constructor(
     }
 
     override fun onFinish() {
-        display.forEach { it.remove() }
+        display.forEach { plugin.scheduler.runTask(it) { it.remove() } }
     }
 
     private enum class EncircleState {

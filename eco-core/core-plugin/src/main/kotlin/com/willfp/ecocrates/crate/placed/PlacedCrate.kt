@@ -42,10 +42,16 @@ class PlacedCrate(
     }
 
     internal fun onRemove() {
-        hologram?.remove()
-        hologram = null
-        item?.remove()
-        item = null
+        hologram?.let {
+            it.remove()
+            hologram = null
+        }
+        item?.let {
+            plugin.scheduler.runTask(it) {
+                it.remove()
+                item = null
+            }
+        }
     }
 
     private fun tickHolograms(tick: Int) {
@@ -81,7 +87,7 @@ class PlacedCrate(
             // clear the other items
             item?.let { item ->
                 item.getNearbyEntities(0.5, 0.5, 0.5).filterIsInstance<Item>().filter { !it.hasGravity() }
-                    .forEach { it.remove() }
+                    .forEach { plugin.scheduler.runTask(it) { it.remove() } }
             }
 
             if (item == null) {

@@ -14,7 +14,7 @@ object CommandReload : Subcommand(
     false
 ) {
     override fun onExecute(sender: CommandSender, args: List<String>) {
-        val runnable: Runnable = {
+        val runnable = Runnable {
             sender.sendMessage(
                 plugin.langYml.getMessage("reloaded", StringUtils.FormatOption.WITHOUT_PLACEHOLDERS)
                     .replace("%time%", plugin.reloadWithTime().toNiceString())

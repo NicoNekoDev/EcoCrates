@@ -565,12 +565,12 @@ class Crate(
 
             tick++
             if (!roll.shouldContinueTicking(tick) || !player.isOpeningCrate) {
-                it.cancel()
+                it.cancelTask()
                 roll.onFinish()
                 player.isOpeningCrate = false
                 if (!canReroll(player) || roll.isReroll) handleFinish(roll) else ReRollGUI.open(roll)
             }
-        }.runTaskTimer(1, 1)
+        }.runTaskTimer(player, 1, 1)
 
         player.isOpeningCrate = true
         player.profile.write(opensKey, getOpens(player) + 1)
